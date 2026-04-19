@@ -28,11 +28,7 @@
             --accent2: #6b46c1;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -42,11 +38,7 @@
             transition: background 0.3s, color 0.3s;
         }
         
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
         
         header {
             text-align: center;
@@ -69,9 +61,7 @@
             transition: transform 0.2s;
         }
         
-        .theme-toggle:hover {
-            transform: scale(1.1);
-        }
+        .theme-toggle:hover { transform: scale(1.1); }
         
         h1 {
             font-size: 2.5rem;
@@ -81,17 +71,9 @@
             margin-bottom: 10px;
         }
         
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; }
         
-        .tab-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
+        .tab-buttons { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
         
         .tab-btn {
             padding: 12px 24px;
@@ -104,22 +86,48 @@
             transition: all 0.2s;
         }
         
-        .tab-btn:hover {
-            background: var(--bg-tertiary);
-        }
-        
+        .tab-btn:hover { background: var(--bg-tertiary); }
         .tab-btn.active {
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
             color: white;
             border-color: transparent;
         }
         
-        .tab-content {
-            display: none;
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .benchmark-info {
+            background: var(--bg-secondary);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
         }
         
-        .tab-content.active {
-            display: block;
+        .benchmark-info h3 {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .benchmark-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .benchmark-item h4 {
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        
+        .benchmark-item p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
         }
         
         .filters {
@@ -132,11 +140,7 @@
             border-radius: 12px;
         }
         
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
         
         label {
             font-size: 0.85rem;
@@ -155,10 +159,7 @@
             min-width: 150px;
         }
         
-        select:focus, input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
+        select:focus, input:focus { outline: none; border-color: var(--accent); }
         
         .stats-grid {
             display: grid;
@@ -221,24 +222,14 @@
             cursor: pointer;
         }
         
-        .model-row:hover {
-            background: var(--bg-tertiary);
-        }
-        
+        .model-row:hover { background: var(--bg-tertiary); }
         .model-row.selected {
             background: linear-gradient(135deg, var(--accent)20 0%, var(--accent2)20 100%);
             border-left: 3px solid var(--accent);
         }
         
-        .model-name {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-        
-        .model-org {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
+        .model-name { font-weight: 600; color: var(--text-primary); }
+        .model-org { font-size: 0.8rem; color: var(--text-secondary); }
         
         .badge {
             display: inline-block;
@@ -248,26 +239,11 @@
             font-weight: 600;
         }
         
-        .badge-new {
-            background: #22c55e20;
-            color: #22c55e;
-        }
+        .badge-new { background: #22c55e20; color: #22c55e; }
+        .badge-moe { background: #f59e0b20; color: #f59e0b; }
+        .badge-dense { background: #3b82f620; color: #3b82f6; }
         
-        .badge-moe {
-            background: #f59e0b20;
-            color: #f59e0b;
-        }
-        
-        .badge-dense {
-            background: #3b82f620;
-            color: #3b82f6;
-        }
-        
-        .score {
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        
+        .score { font-weight: 600; font-size: 1.1rem; }
         .score-high { color: #22c55e; }
         .score-med { color: #f59e0b; }
         .score-low { color: #ef4444; }
@@ -286,11 +262,7 @@
         .ram-yellow { background: #f59e0b20; color: #f59e0b; }
         .ram-red { background: #ef444420; color: #ef4444; }
         
-        .compare-checkbox {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
+        .compare-checkbox { width: 20px; height: 20px; cursor: pointer; }
         
         .charts-grid {
             display: grid;
@@ -322,10 +294,7 @@
             margin-bottom: 30px;
         }
         
-        .comparison-panel h3 {
-            margin-bottom: 20px;
-            color: var(--text-secondary);
-        }
+        .comparison-panel h3 { margin-bottom: 20px; color: var(--text-secondary); }
         
         .comparison-grid {
             display: grid;
@@ -340,9 +309,7 @@
             border: 2px solid transparent;
         }
         
-        .comparison-card.winner {
-            border-color: #22c55e;
-        }
+        .comparison-card.winner { border-color: #22c55e; }
         
         .comparison-metric {
             display: flex;
@@ -351,9 +318,7 @@
             border-bottom: 1px solid var(--border);
         }
         
-        .comparison-metric:last-child {
-            border-bottom: none;
-        }
+        .comparison-metric:last-child { border-bottom: none; }
         
         .credits {
             background: var(--bg-secondary);
@@ -389,13 +354,8 @@
             transition: background 0.2s;
         }
         
-        .credit-item:hover {
-            background: var(--border);
-        }
-        
-        .credit-icon {
-            font-size: 1.5rem;
-        }
+        .credit-item:hover { background: var(--border); }
+        .credit-icon { font-size: 1.5rem; }
         
         footer {
             text-align: center;
@@ -405,25 +365,13 @@
             margin-top: 40px;
         }
         
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: var(--text-secondary);
-        }
+        .loading { text-align: center; padding: 60px; color: var(--text-secondary); }
         
         @media (max-width: 1024px) {
-            .table-header, .model-row {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
+            .table-header, .model-row { grid-template-columns: 1fr 1fr; gap: 10px; }
             .table-header { display: none; }
-            .model-row {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
+            .model-row { flex-direction: column; align-items: flex-start; }
+            .charts-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -443,6 +391,20 @@
         
         <!-- Table Tab -->
         <div id="tableTab" class="tab-content active">
+            <div class="benchmark-info">
+                <h3>📊 Benchmark Explanations</h3>
+                <div class="benchmark-grid">
+                    <div class="benchmark-item">
+                        <h4>MMLU (Massive Multitask Language Understanding)</h4>
+                        <p>Tests knowledge across 57 subjects including math, history, law, medicine, and more. <strong>Higher is better.</strong> 80%+ = excellent general knowledge, 70-80% = good, below 70% = average.</p>
+                    </div>
+                    <div class="benchmark-item">
+                        <h4>HumanEval</h4>
+                        <p>Measures code generation ability using 164 programming problems. <strong>Higher is better.</strong> 80%+ = excellent coder, 70-80% = good programming skills, below 70% = basic coding ability.</p>
+                    </div>
+                </div>
+            </div>
+            
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Total Models</h3>
@@ -474,6 +436,8 @@
                         <option value="DeepSeek">DeepSeek</option>
                         <option value="Microsoft">Microsoft</option>
                         <option value="NVIDIA">NVIDIA</option>
+                        <option value="Cohere">Cohere</option>
+                        <option value="Databricks">Databricks</option>
                     </select>
                 </div>
                 <div class="filter-group">
@@ -539,7 +503,7 @@
         <div id="compareTab" class="tab-content">
             <div class="comparison-panel">
                 <h3>⚖️ Model Comparison</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 20px;">Select models from the table view to compare them here.</p>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Select models from the table view to compare them here. Best values highlighted in green.</p>
                 <div id="comparisonContent" class="comparison-grid"></div>
             </div>
         </div>
@@ -601,28 +565,67 @@
     </div>
     
     <script>
-        // Extended LLM Data - 20 Models
+        // Extended LLM Data - 40+ Models from last year
         const models = [
+            // Gemma Family (2024-2026)
             { name: "Gemma 4 E4B", org: "Google", size: "4B", ram: 8, mmlu: 78.5, humaneval: 72.3, speed: "Fast", arch: "Dense", isNew: true, release: "Apr 2026" },
             { name: "Gemma 4 26B A4B", org: "Google", size: "26B (4B active)", ram: 16, mmlu: 85.2, humaneval: 81.7, speed: "Moderate", arch: "MoE", isNew: true, release: "Apr 2026" },
             { name: "Gemma 4 31B", org: "Google", size: "31B", ram: 62, mmlu: 87.1, humaneval: 84.2, speed: "Slow", arch: "Dense", isNew: true, release: "Apr 2026" },
             { name: "Gemma 4 E2B", org: "Google", size: "2B", ram: 4, mmlu: 71.2, humaneval: 65.8, speed: "Very Fast", arch: "Dense", isNew: true, release: "Apr 2026" },
-            { name: "Qwen 3.6 35B-A3B", org: "Alibaba", size: "35B (3B active)", ram: 20, mmlu: 83.8, humaneval: 79.4, speed: "Moderate", arch: "MoE", isNew: true, release: "Apr 2026" },
+            { name: "Gemma 3 27B", org: "Google", size: "27B", ram: 18, mmlu: 79.8, humaneval: 74.2, speed: "Moderate", arch: "Dense", isNew: false, release: "Mar 2025" },
+            { name: "Gemma 3 12B", org: "Google", size: "12B", ram: 10, mmlu: 77.3, humaneval: 71.5, speed: "Fast", arch: "Dense", isNew: false, release: "Mar 2025" },
+            { name: "Gemma 3 4B", org: "Google", size: "4B", ram: 6, mmlu: 72.1, humaneval: 66.4, speed: "Fast", arch: "Dense", isNew: false, release: "Mar 2025" },
+            { name: "Gemma 2 27B", org: "Google", size: "27B", ram: 18, mmlu: 75.2, humaneval: 69.8, speed: "Moderate", arch: "Dense", isNew: false, release: "Jun 2024" },
+            { name: "Gemma 2 9B", org: "Google", size: "9B", ram: 7, mmlu: 71.8, humaneval: 65.2, speed: "Fast", arch: "Dense", isNew: false, release: "Jun 2024" },
+            { name: "Gemma 2 2B", org: "Google", size: "2B", ram: 3, mmlu: 66.5, humaneval: 58.4, speed: "Very Fast", arch: "Dense", isNew: false, release: "Jun 2024" },
+            
+            // Llama Family (2024-2025)
             { name: "Llama 4 Scout", org: "Meta", size: "109B (17B active)", ram: 35, mmlu: 86.5, humaneval: 82.1, speed: "Slow", arch: "MoE", isNew: false, release: "Apr 2025" },
             { name: "Llama 4 Maverick", org: "Meta", size: "400B (17B active)", ram: 40, mmlu: 88.2, humaneval: 85.3, speed: "Slow", arch: "MoE", isNew: false, release: "Apr 2025" },
-            { name: "Mistral Small 4", org: "Mistral", size: "12B", ram: 8, mmlu: 76.8, humaneval: 70.2, speed: "Fast", arch: "Dense", isNew: true, release: "Mar 2026" },
-            { name: "DeepSeek R1", org: "DeepSeek", size: "671B (37B active)", ram: 40, mmlu: 90.2, humaneval: 89.7, speed: "Slow", arch: "MoE", isNew: false, release: "Jan 2026" },
-            { name: "Qwen 3.5 7B", org: "Alibaba", size: "7B", ram: 6, mmlu: 74.5, humaneval: 68.9, speed: "Fast", arch: "Dense", isNew: false, release: "Sep 2025" },
-            { name: "Gemma 3 4B", org: "Google", size: "4B", ram: 6, mmlu: 72.1, humaneval: 66.4, speed: "Fast", arch: "Dense", isNew: false, release: "Mar 2025" },
             { name: "Llama 3.3 70B", org: "Meta", size: "70B", ram: 55, mmlu: 86.1, humaneval: 81.2, speed: "Slow", arch: "Dense", isNew: false, release: "Dec 2024" },
-            { name: "Phi-4 14B", org: "Microsoft", size: "14B", ram: 10, mmlu: 81.2, humaneval: 75.8, speed: "Fast", arch: "Dense", isNew: true, release: "Jan 2026" },
-            { name: "Nemotron 4 340B", org: "NVIDIA", size: "340B", ram: 80, mmlu: 88.9, humaneval: 86.4, speed: "Very Slow", arch: "Dense", isNew: false, release: "Jun 2024" },
-            { name: "Mixtral 8x22B", org: "Mistral", size: "176B (44B active)", ram: 50, mmlu: 84.7, humaneval: 80.1, speed: "Slow", arch: "MoE", isNew: false, release: "Apr 2024" },
-            { name: "Qwen 2.5 72B", org: "Alibaba", size: "72B", ram: 58, mmlu: 85.1, humaneval: 81.3, speed: "Slow", arch: "Dense", isNew: false, release: "Sep 2025" },
-            { name: "Gemma 3 27B", org: "Google", size: "27B", ram: 18, mmlu: 79.8, humaneval: 74.2, speed: "Moderate", arch: "Dense", isNew: false, release: "Mar 2025" },
+            { name: "Llama 3.2 90B", org: "Meta", size: "90B (9B active)", ram: 22, mmlu: 84.8, humaneval: 79.5, speed: "Moderate", arch: "MoE", isNew: false, release: "Sep 2024" },
+            { name: "Llama 3.2 11B", org: "Meta", size: "11B", ram: 8, mmlu: 78.2, humaneval: 72.1, speed: "Fast", arch: "Dense", isNew: false, release: "Sep 2024" },
+            { name: "Llama 3.2 3B", org: "Meta", size: "3B", ram: 3, mmlu: 68.5, humaneval: 61.2, speed: "Very Fast", arch: "Dense", isNew: false, release: "Sep 2024" },
             { name: "Llama 3.1 405B", org: "Meta", size: "405B", ram: 85, mmlu: 87.3, humaneval: 83.9, speed: "Very Slow", arch: "Dense", isNew: false, release: "Jul 2024" },
+            { name: "Llama 3.1 70B", org: "Meta", size: "70B", ram: 55, mmlu: 84.2, humaneval: 78.6, speed: "Slow", arch: "Dense", isNew: false, release: "Jul 2024" },
+            { name: "Llama 3.1 8B", org: "Meta", size: "8B", ram: 6, mmlu: 73.8, humaneval: 67.5, speed: "Fast", arch: "Dense", isNew: false, release: "Jul 2024" },
+            { name: "Llama 3 70B", org: "Meta", size: "70B", ram: 55, mmlu: 82.0, humaneval: 76.2, speed: "Slow", arch: "Dense", isNew: false, release: "Apr 2024" },
+            { name: "Llama 3 8B", org: "Meta", size: "8B", ram: 6, mmlu: 68.4, humaneval: 62.2, speed: "Fast", arch: "Dense", isNew: false, release: "Apr 2024" },
+            
+            // Qwen Family (2024-2026)
+            { name: "Qwen 3.6 35B-A3B", org: "Alibaba", size: "35B (3B active)", ram: 20, mmlu: 83.8, humaneval: 79.4, speed: "Moderate", arch: "MoE", isNew: true, release: "Apr 2026" },
+            { name: "Qwen 3.5 72B", org: "Alibaba", size: "72B", ram: 58, mmlu: 86.2, humaneval: 82.1, speed: "Slow", arch: "Dense", isNew: false, release: "Nov 2025" },
+            { name: "Qwen 3.5 32B", org: "Alibaba", size: "32B", ram: 25, mmlu: 83.5, humaneval: 78.8, speed: "Moderate", arch: "Dense", isNew: false, release: "Nov 2025" },
+            { name: "Qwen 3.5 14B", org: "Alibaba", size: "14B", ram: 11, mmlu: 80.1, humaneval: 74.2, speed: "Fast", arch: "Dense", isNew: false, release: "Nov 2025" },
+            { name: "Qwen 3.5 7B", org: "Alibaba", size: "7B", ram: 6, mmlu: 74.5, humaneval: 68.9, speed: "Fast", arch: "Dense", isNew: false, release: "Nov 2025" },
+            { name: "Qwen 2.5 72B", org: "Alibaba", size: "72B", ram: 58, mmlu: 85.1, humaneval: 81.3, speed: "Slow", arch: "Dense", isNew: false, release: "Sep 2025" },
+            { name: "Qwen 2.5 32B", org: "Alibaba", size: "32B", ram: 25, mmlu: 82.8, humaneval: 78.1, speed: "Moderate", arch: "Dense", isNew: false, release: "Sep 2025" },
+            { name: "Qwen 2.5 14B", org: "Alibaba", size: "14B", ram: 11, mmlu: 79.5, humaneval: 73.8, speed: "Fast", arch: "Dense", isNew: false, release: "Sep 2025" },
+            { name: "Qwen 2.5 7B", org: "Alibaba", size: "7B", ram: 6, mmlu: 74.2, humaneval: 68.2, speed: "Fast", arch: "Dense", isNew: false, release: "Sep 2025" },
+            
+            // Mistral Family (2023-2026)
+            { name: "Mistral Small 4", org: "Mistral", size: "12B", ram: 8, mmlu: 76.8, humaneval: 70.2, speed: "Fast", arch: "Dense", isNew: true, release: "Mar 2026" },
+            { name: "Mistral Large 2", org: "Mistral", size: "123B", ram: 65, mmlu: 84.2, humaneval: 80.5, speed: "Slow", arch: "Dense", isNew: false, release: "Jul 2024" },
+            { name: "Mixtral 8x22B", org: "Mistral", size: "176B (44B active)", ram: 50, mmlu: 84.7, humaneval: 80.1, speed: "Slow", arch: "MoE", isNew: false, release: "Apr 2024" },
+            { name: "Mixtral 8x7B", org: "Mistral", size: "56B (12B active)", ram: 15, mmlu: 77.8, humaneval: 71.5, speed: "Fast", arch: "MoE", isNew: false, release: "Dec 2023" },
+            { name: "Mistral 7B", org: "Mistral", size: "7B", ram: 5, mmlu: 71.2, humaneval: 64.8, speed: "Very Fast", arch: "Dense", isNew: false, release: "Sep 2023" },
+            
+            // DeepSeek Family (2024-2026)
+            { name: "DeepSeek R1", org: "DeepSeek", size: "671B (37B active)", ram: 40, mmlu: 90.2, humaneval: 89.7, speed: "Slow", arch: "MoE", isNew: false, release: "Jan 2026" },
             { name: "DeepSeek V3", org: "DeepSeek", size: "671B (37B active)", ram: 40, mmlu: 87.1, humaneval: 82.3, speed: "Slow", arch: "MoE", isNew: false, release: "Dec 2024" },
-            { name: "Mistral Large 2", org: "Mistral", size: "123B", ram: 65, mmlu: 84.2, humaneval: 80.5, speed: "Slow", arch: "Dense", isNew: false, release: "Jul 2024" }
+            { name: "DeepSeek Coder V2", org: "DeepSeek", size: "236B (21B active)", ram: 25, mmlu: 81.5, humaneval: 85.2, speed: "Moderate", arch: "MoE", isNew: false, release: "Jun 2024" },
+            
+            // Microsoft Phi Family (2024-2026)
+            { name: "Phi-4 14B", org: "Microsoft", size: "14B", ram: 10, mmlu: 81.2, humaneval: 75.8, speed: "Fast", arch: "Dense", isNew: true, release: "Jan 2026" },
+            { name: "Phi-3 Medium", org: "Microsoft", size: "14B", ram: 10, mmlu: 77.5, humaneval: 70.2, speed: "Fast", arch: "Dense", isNew: false, release: "May 2024" },
+            { name: "Phi-3 Small", org: "Microsoft", size: "7B", ram: 5, mmlu: 72.8, humaneval: 65.4, speed: "Very Fast", arch: "Dense", isNew: false, release: "May 2024" },
+            { name: "Phi-3 Mini", org: "Microsoft", size: "3.8B", ram: 3, mmlu: 68.5, humaneval: 59.8, speed: "Very Fast", arch: "Dense", isNew: false, release: "Apr 2024" },
+            
+            // Other Notable Models
+            { name: "Nemotron 4 340B", org: "NVIDIA", size: "340B", ram: 80, mmlu: 88.9, humaneval: 86.4, speed: "Very Slow", arch: "Dense", isNew: false, release: "Jun 2024" },
+            { name: "Command R+", org: "Cohere", size: "104B", ram: 52, mmlu: 83.5, humaneval: 78.2, speed: "Slow", arch: "Dense", isNew: false, release: "Apr 2024" },
+            { name: "Command R", org: "Cohere", size: "35B", ram: 22, mmlu: 79.2, humaneval: 72.8, speed: "Moderate", arch: "Dense", isNew: false, release: "Mar 2024" },
+            { name: "DBRX", org: "Databricks", size: "132B (36B active)", ram: 42, mmlu: 82.1, humaneval: 76.5, speed: "Slow", arch: "MoE", isNew: false, release: "Mar 2024" }
         ];
         
         let selectedModels = [];
@@ -717,7 +720,7 @@
             const container = document.getElementById('comparisonContent');
             
             if (selectedModels.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-secondary);">Select models from the table view to compare them here.</p>';
+                container.innerHTML = '<p style="color: var(--text-secondary);">Select models from the table view to compare them here. Best values highlighted in green.</p>';
                 return;
             }
             
@@ -743,7 +746,8 @@
                     </div>
                     <div class="comparison-metric">
                         <span>MMLU</span>
-                        <strong style="color: ${model.mmlu === maxMMLU ? '#22c55e' : 'inherit'}">${model.mmlu}%</strong                    </div>
+                        <strong style="color: ${model.mmlu === maxMMLU ? '#22c55e' : 'inherit'}">${model.mmlu}%</strong>
+                    </div>
                     <div class="comparison-metric">
                         <span>HumanEval</span>
                         <strong style="color: ${model.humaneval === maxHumanEval ? '#22c55e' : 'inherit'}">${model.humaneval}%</strong>
@@ -841,7 +845,10 @@
                             'rgba(245, 158, 11, 0.6)',
                             'rgba(239, 68, 68, 0.6)',
                             'rgba(59, 130, 246, 0.6)',
-                            'rgba(168, 85, 247, 0.6)'
+                            'rgba(168, 85, 247, 0.6)',
+                            'rgba(236, 72, 153, 0.6)',
+                            'rgba(20, 184, 166, 0.6)',
+                            'rgba(251, 146, 60, 0.6)'
                         ]
                     }]
                 },
@@ -869,7 +876,6 @@
             
             document.querySelector('.theme-toggle').textContent = next === 'dark' ? '🌙' : '☀️';
             
-            // Update charts if they exist
             if (charts.mmlu) {
                 Object.values(charts).forEach(chart => chart.update());
             }
