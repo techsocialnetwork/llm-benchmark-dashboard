@@ -464,6 +464,20 @@
                     <label>Search</label>
                     <input type="text" id="searchInput" placeholder="Model name..." oninput="filterModels()">
                 </div>
+                <div class="filter-group">
+                    <label>Sort By</label>
+                    <select id="sortFilter" onchange="filterModels()">
+                        <option value="default">Default</option>
+                        <option value="mmlu-high">MMLU (High → Low)</option>
+                        <option value="mmlu-low">MMLU (Low → High)</option>
+                        <option value="humaneval-high">HumanEval (High → Low)</option>
+                        <option value="humaneval-low">HumanEval (Low → High)</option>
+                        <option value="ram-high">RAM (High → Low)</option>
+                        <option value="ram-low">RAM (Low → High)</option>
+                        <option value="vram-high">VRAM (High → Low)</option>
+                        <option value="vram-low">VRAM (Low → High)</option>
+                    </select>
+                </div>
             </div>
             
             <div class="models-table">
@@ -664,9 +678,10 @@
             const org = document.getElementById('orgFilter').value;
             const arch = document.getElementById('archFilter').value;
             const hw = document.getElementById('hwFilter').value;
+            const sort = document.getElementById('sortFilter').value;
             const search = document.getElementById('searchInput').value.toLowerCase();
             
-            return models.filter(model => {
+            let filtered = models.filter(model => {
                 if (org !== 'all' && model.org !== org) return false;
                 if (arch !== 'all' && model.arch !== arch) return false;
                 // Hardware filters
@@ -679,6 +694,18 @@
                 if (search && !model.name.toLowerCase().includes(search)) return false;
                 return true;
             });
+            
+            // Sorting
+            if (sort === 'mmlu-high') filtered.sort((a, b) => b.mmlu - a.mmlu);
+            if (sort === 'mmlu-low') filtered.sort((a, b) => a.mmlu - b.mmlu);
+            if (sort === 'humaneval-high') filtered.sort((a, b) => b.humaneval - a.humaneval);
+            if (sort === 'humaneval-low') filtered.sort((a, b) => a.humaneval - b.humaneval);
+            if (sort === 'ram-high') filtered.sort((a, b) => b.ram - a.ram);
+            if (sort === 'ram-low') filtered.sort((a, b) => a.ram - b.ram);
+            if (sort === 'vram-high') filtered.sort((a, b) => b.vram - a.vram);
+            if (sort === 'vram-low') filtered.sort((a, b) => a.vram - b.vram);
+            
+            return filtered;
         }
         
         function renderModels(filteredModels) {
