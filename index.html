@@ -212,6 +212,48 @@
             margin-top: 40px;
         }
         
+        .credits {
+            background: #151520;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            border: 1px solid #2a2a3a;
+        }
+        
+        .credits h3 {
+            color: #888;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+        
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .credit-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #1e1e2e;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #e0e0e0;
+            transition: background 0.2s;
+        }
+        
+        .credit-item:hover {
+            background: #2a2a3a;
+        }
+        
+        .credit-icon {
+            font-size: 1.5rem;
+        }
+        
         .loading {
             text-align: center;
             padding: 60px;
@@ -304,9 +346,59 @@
             <div id="modelsList"></div>
         </div>
         
+        <div class="credits">
+            <h3>🙏 Open Source Credits</h3>
+            <div class="credits-grid">
+                <a href="https://ai.google.dev/gemma" target="_blank" class="credit-item">
+                    <span class="credit-icon">🔷</span>
+                    <span>Google Gemma</span>
+                </a>
+                <a href="https://llama.meta.com" target="_blank" class="credit-item">
+                    <span class="credit-icon">🦙</span>
+                    <span>Meta Llama</span>
+                </a>
+                <a href="https://qwenlm.github.io" target="_blank" class="credit-item">
+                    <span class="credit-icon">🌐</span>
+                    <span>Alibaba Qwen</span>
+                </a>
+                <a href="https://mistral.ai" target="_blank" class="credit-item">
+                    <span class="credit-icon">🌪️</span>
+                    <span>Mistral AI</span>
+                </a>
+                <a href="https://deepseek.ai" target="_blank" class="credit-item">
+                    <span class="credit-icon">🔍</span>
+                    <span>DeepSeek</span>
+                </a>
+                <a href="https://huggingface.co" target="_blank" class="credit-item">
+                    <span class="credit-icon">🤗</span>
+                    <span>Hugging Face</span>
+                </a>
+                <a href="https://ollama.com" target="_blank" class="credit-item">
+                    <span class="credit-icon">🦙</span>
+                    <span>Ollama</span>
+                </a>
+                <a href="https://lmstudio.ai" target="_blank" class="credit-item">
+                    <span class="credit-icon">🖥️</span>
+                    <span>LM Studio</span>
+                </a>
+                <a href="https://github.com/ggerganov/llama.cpp" target="_blank" class="credit-item">
+                    <span class="credit-icon">⚡</span>
+                    <span>llama.cpp</span>
+                </a>
+                <a href="https://openrouter.ai" target="_blank" class="credit-item">
+                    <span class="credit-icon">🔌</span>
+                    <span>OpenRouter</span>
+                </a>
+            </div>
+        </div>
+        
         <footer>
             <p>Data sourced from official releases, Hugging Face, and benchmark leaderboards</p>
             <p style="margin-top: 10px;">Last updated: April 19, 2026</p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">
+                This dashboard is open source • 
+                <a href="https://github.com/techsocialnetwork/llm-benchmark-dashboard" style="color: #667eea;">View on GitHub</a>
+            </p>
         </footer>
     </div>
     

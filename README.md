@@ -56,6 +56,23 @@ Site will be live at `https://yourusername.github.io/llm-benchmark-dashboard/`
 | Mistral Small 4 | Mistral | 12B | 8GB | General use |
 | DeepSeek R1 | DeepSeek | 671B (37B active) | 40GB | Reasoning |
 
+## Credits
+
+This dashboard is made possible by the open source AI community:
+
+| Project | Description | License |
+|---------|-------------|---------|
+| [Google Gemma](https://ai.google.dev/gemma) | Open models from Google DeepMind | Apache 2.0 |
+| [Meta Llama](https://llama.meta.com) | Open models from Meta AI | Llama 3.1/4 License |
+| [Alibaba Qwen](https://qwenlm.github.io) | Multilingual models from Alibaba | Apache 2.0 / Qwen License |
+| [Mistral AI](https://mistral.ai) | European open source models | Apache 2.0 |
+| [DeepSeek](https://deepseek.ai) | Reasoning-focused models | DeepSeek License |
+| [Hugging Face](https://huggingface.co) | Model hub and transformers | Apache 2.0 |
+| [Ollama](https://ollama.com) | Local LLM runner | MIT |
+| [LM Studio](https://lmstudio.ai) | Local LLM GUI | Proprietary (free) |
+| [llama.cpp](https://github.com/ggerganov/llama.cpp) | Efficient LLM inference | MIT |
+| [OpenRouter](https://openrouter.ai) | Unified API for LLMs | - |
+
 ## License
 
-MIT
+MIT License - See [LICENSE](LICENSE) file
