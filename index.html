@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LLM Benchmark Dashboard 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #151520;
+            --bg-tertiary: #1e1e2e;
+            --border: #2a2a3a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888;
+            --accent: #667eea;
+            --accent2: #764ba2;
+        }
+        
+        [data-theme="light"] {
+            --bg-primary: #f5f5f7;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f0f0f5;
+            --border: #e0e0e5;
+            --text-primary: #1a1a2e;
+            --text-secondary: #666;
+            --accent: #5a67d8;
+            --accent2: #6b46c1;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -13,9 +36,10 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0a0f;
-            color: #e0e0e0;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
         }
         
         .container {
@@ -27,21 +51,75 @@
         header {
             text-align: center;
             padding: 40px 0;
-            border-bottom: 1px solid #2a2a3a;
+            border-bottom: 1px solid var(--border);
             margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
         }
         
         h1 {
             font-size: 2.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
         }
         
         .subtitle {
-            color: #888;
+            color: var(--text-secondary);
             font-size: 1.1rem;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 12px 24px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .tab-btn:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
         }
         
         .filters {
@@ -50,7 +128,7 @@
             flex-wrap: wrap;
             margin-bottom: 30px;
             padding: 20px;
-            background: #151520;
+            background: var(--bg-secondary);
             border-radius: 12px;
         }
         
@@ -62,24 +140,24 @@
         
         label {
             font-size: 0.85rem;
-            color: #888;
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         
         select, input {
             padding: 10px 15px;
-            background: #1e1e2e;
-            border: 1px solid #2a2a3a;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
             border-radius: 8px;
-            color: #e0e0e0;
+            color: var(--text-primary);
             font-size: 0.95rem;
             min-width: 150px;
         }
         
         select:focus, input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--accent);
         }
         
         .stats-grid {
@@ -90,15 +168,15 @@
         }
         
         .stat-card {
-            background: #151520;
+            background: var(--bg-secondary);
             padding: 25px;
             border-radius: 12px;
-            border: 1px solid #2a2a3a;
+            border: 1px solid var(--border);
         }
         
         .stat-card h3 {
             font-size: 0.9rem;
-            color: #888;
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 10px;
@@ -107,53 +185,59 @@
         .stat-value {
             font-size: 2.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
         .models-table {
-            background: #151520;
+            background: var(--bg-secondary);
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid #2a2a3a;
+            border: 1px solid var(--border);
         }
         
         .table-header {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 100px;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 100px 60px;
             gap: 15px;
             padding: 20px;
-            background: #1e1e2e;
+            background: var(--bg-tertiary);
             font-weight: 600;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #888;
+            color: var(--text-secondary);
         }
         
         .model-row {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 100px;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 100px 60px;
             gap: 15px;
             padding: 20px;
-            border-top: 1px solid #2a2a3a;
+            border-top: 1px solid var(--border);
             align-items: center;
             transition: background 0.2s;
+            cursor: pointer;
         }
         
         .model-row:hover {
-            background: #1e1e2e;
+            background: var(--bg-tertiary);
+        }
+        
+        .model-row.selected {
+            background: linear-gradient(135deg, var(--accent)20 0%, var(--accent2)20 100%);
+            border-left: 3px solid var(--accent);
         }
         
         .model-name {
             font-weight: 600;
-            color: #fff;
+            color: var(--text-primary);
         }
         
         .model-org {
             font-size: 0.8rem;
-            color: #888;
+            color: var(--text-secondary);
         }
         
         .badge {
@@ -202,26 +286,85 @@
         .ram-yellow { background: #f59e0b20; color: #f59e0b; }
         .ram-red { background: #ef444420; color: #ef4444; }
         
-        .hidden { display: none; }
+        .compare-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
         
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            color: #666;
-            border-top: 1px solid #2a2a3a;
-            margin-top: 40px;
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            background: var(--bg-secondary);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .chart-container h3 {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .comparison-panel {
+            background: var(--bg-secondary);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+        
+        .comparison-panel h3 {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .comparison-card {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+        }
+        
+        .comparison-card.winner {
+            border-color: #22c55e;
+        }
+        
+        .comparison-metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .comparison-metric:last-child {
+            border-bottom: none;
         }
         
         .credits {
-            background: #151520;
+            background: var(--bg-secondary);
             padding: 30px;
             border-radius: 12px;
             margin-top: 30px;
-            border: 1px solid #2a2a3a;
+            border: 1px solid var(--border);
         }
         
         .credits h3 {
-            color: #888;
+            color: var(--text-secondary);
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -239,25 +382,33 @@
             align-items: center;
             gap: 10px;
             padding: 12px;
-            background: #1e1e2e;
+            background: var(--bg-tertiary);
             border-radius: 8px;
             text-decoration: none;
-            color: #e0e0e0;
+            color: var(--text-primary);
             transition: background 0.2s;
         }
         
         .credit-item:hover {
-            background: #2a2a3a;
+            background: var(--border);
         }
         
         .credit-icon {
             font-size: 1.5rem;
         }
         
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+        
         .loading {
             text-align: center;
             padding: 60px;
-            color: #888;
+            color: var(--text-secondary);
         }
         
         @media (max-width: 1024px) {
@@ -270,80 +421,127 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
             <h1>🤖 LLM Benchmark Dashboard</h1>
             <p class="subtitle">Latest Open Source Models (April 2026) — Optimized for 64GB RAM</p>
         </header>
         
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total Models</h3>
-                <div class="stat-value" id="totalModels">0</div>
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showTab('table')">📊 Table View</button>
+            <button class="tab-btn" onclick="showTab('charts')">📈 Charts</button>
+            <button class="tab-btn" onclick="showTab('compare')">⚖️ Compare (<span id="compareCount">0</span>)</button>
+        </div>
+        
+        <!-- Table Tab -->
+        <div id="tableTab" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Models</h3>
+                    <div class="stat-value" id="totalModels">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>CPU Compatible</h3>
+                    <div class="stat-value" id="cpuCompatible">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>New This Month</h3>
+                    <div class="stat-value" id="newThisMonth">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Best Overall</h3>
+                    <div class="stat-value" style="font-size: 1.5rem;">Gemma 4</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <h3>CPU Compatible</h3>
-                <div class="stat-value" id="cpuCompatible">0</div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Organization</label>
+                    <select id="orgFilter" onchange="filterModels()">
+                        <option value="all">All</option>
+                        <option value="Google">Google</option>
+                        <option value="Meta">Meta</option>
+                        <option value="Alibaba">Alibaba</option>
+                        <option value="Mistral">Mistral</option>
+                        <option value="DeepSeek">DeepSeek</option>
+                        <option value="Microsoft">Microsoft</option>
+                        <option value="NVIDIA">NVIDIA</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Architecture</label>
+                    <select id="archFilter" onchange="filterModels()">
+                        <option value="all">All</option>
+                        <option value="MoE">Mixture of Experts</option>
+                        <option value="Dense">Dense</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>CPU Feasible</label>
+                    <select id="cpuFilter" onchange="filterModels()">
+                        <option value="all">All</option>
+                        <option value="yes">Yes (64GB)</option>
+                        <option value="fast">Fast Inference</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Search</label>
+                    <input type="text" id="searchInput" placeholder="Model name..." oninput="filterModels()">
+                </div>
             </div>
-            <div class="stat-card">
-                <h3>New This Month</h3>
-                <div class="stat-value" id="newThisMonth">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>Best Overall</h3>
-                <div class="stat-value" style="font-size: 1.5rem;">Gemma 4</div>
+            
+            <div class="models-table">
+                <div class="table-header">
+                    <div>Model</div>
+                    <div>Size</div>
+                    <div>RAM</div>
+                    <div>MMLU</div>
+                    <div>HumanEval</div>
+                    <div>Speed</div>
+                    <div>Type</div>
+                    <div>Compare</div>
+                </div>
+                <div id="modelsList"></div>
             </div>
         </div>
         
-        <div class="filters">
-            <div class="filter-group">
-                <label>Organization</label>
-                <select id="orgFilter">
-                    <option value="all">All</option>
-                    <option value="Google">Google</option>
-                    <option value="Meta">Meta</option>
-                    <option value="Alibaba">Alibaba</option>
-                    <option value="Mistral">Mistral</option>
-                    <option value="DeepSeek">DeepSeek</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Architecture</label>
-                <select id="archFilter">
-                    <option value="all">All</option>
-                    <option value="MoE">Mixture of Experts</option>
-                    <option value="Dense">Dense</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>CPU Feasible</label>
-                <select id="cpuFilter">
-                    <option value="all">All</option>
-                    <option value="yes">Yes (64GB)</option>
-                    <option value="fast">Fast Inference</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Search</label>
-                <input type="text" id="searchInput" placeholder="Model name...">
+        <!-- Charts Tab -->
+        <div id="chartsTab" class="tab-content">
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3>MMLU Score by Model</h3>
+                    <canvas id="mmluChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>HumanEval Score by Model</h3>
+                    <canvas id="humanevalChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>RAM Requirements</h3>
+                    <canvas id="ramChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Models by Organization</h3>
+                    <canvas id="orgChart"></canvas>
+                </div>
             </div>
         </div>
         
-        <div class="models-table">
-            <div class="table-header">
-                <div>Model</div>
-                <div>Size</div>
-                <div>RAM</div>
-                <div>MMLU</div>
-                <div>HumanEval</div>
-                <div>Speed</div>
-                <div>Type</div>
+        <!-- Compare Tab -->
+        <div id="compareTab" class="tab-content">
+            <div class="comparison-panel">
+                <h3>⚖️ Model Comparison</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Select models from the table view to compare them here.</p>
+                <div id="comparisonContent" class="comparison-grid"></div>
             </div>
-            <div id="modelsList"></div>
         </div>
         
         <div class="credits">
@@ -397,159 +595,38 @@
             <p style="margin-top: 10px;">Last updated: April 19, 2026</p>
             <p style="margin-top: 10px; font-size: 0.85rem;">
                 This dashboard is open source • 
-                <a href="https://github.com/techsocialnetwork/llm-benchmark-dashboard" style="color: #667eea;">View on GitHub</a>
+                <a href="https://github.com/techsocialnetwork/llm-benchmark-dashboard" style="color: var(--accent);">View on GitHub</a>
             </p>
         </footer>
     </div>
     
     <script>
-        // LLM Data
+        // Extended LLM Data - 20 Models
         const models = [
-            {
-                name: "Gemma 4 E4B",
-                org: "Google",
-                size: "4B",
-                ram: 8,
-                mmlu: 78.5,
-                humaneval: 72.3,
-                speed: "Fast",
-                arch: "Dense",
-                isNew: true,
-                release: "Apr 2026"
-            },
-            {
-                name: "Gemma 4 26B A4B",
-                org: "Google",
-                size: "26B (4B active)",
-                ram: 16,
-                mmlu: 85.2,
-                humaneval: 81.7,
-                speed: "Moderate",
-                arch: "MoE",
-                isNew: true,
-                release: "Apr 2026"
-            },
-            {
-                name: "Gemma 4 31B",
-                org: "Google",
-                size: "31B",
-                ram: 62,
-                mmlu: 87.1,
-                humaneval: 84.2,
-                speed: "Slow",
-                arch: "Dense",
-                isNew: true,
-                release: "Apr 2026"
-            },
-            {
-                name: "Gemma 4 E2B",
-                org: "Google",
-                size: "2B",
-                ram: 4,
-                mmlu: 71.2,
-                humaneval: 65.8,
-                speed: "Very Fast",
-                arch: "Dense",
-                isNew: true,
-                release: "Apr 2026"
-            },
-            {
-                name: "Qwen 3.6 35B-A3B",
-                org: "Alibaba",
-                size: "35B (3B active)",
-                ram: 20,
-                mmlu: 83.8,
-                humaneval: 79.4,
-                speed: "Moderate",
-                arch: "MoE",
-                isNew: true,
-                release: "Apr 2026"
-            },
-            {
-                name: "Llama 4 Scout",
-                org: "Meta",
-                size: "109B (17B active)",
-                ram: 35,
-                mmlu: 86.5,
-                humaneval: 82.1,
-                speed: "Slow",
-                arch: "MoE",
-                isNew: false,
-                release: "Apr 2025"
-            },
-            {
-                name: "Llama 4 Maverick",
-                org: "Meta",
-                size: "400B (17B active)",
-                ram: 40,
-                mmlu: 88.2,
-                humaneval: 85.3,
-                speed: "Slow",
-                arch: "MoE",
-                isNew: false,
-                release: "Apr 2025"
-            },
-            {
-                name: "Mistral Small 4",
-                org: "Mistral",
-                size: "12B",
-                ram: 8,
-                mmlu: 76.8,
-                humaneval: 70.2,
-                speed: "Fast",
-                arch: "Dense",
-                isNew: true,
-                release: "Mar 2026"
-            },
-            {
-                name: "DeepSeek R1",
-                org: "DeepSeek",
-                size: "671B (37B active)",
-                ram: 40,
-                mmlu: 90.2,
-                humaneval: 89.7,
-                speed: "Slow",
-                arch: "MoE",
-                isNew: false,
-                release: "Jan 2026"
-            },
-            {
-                name: "Qwen 3.5 7B",
-                org: "Alibaba",
-                size: "7B",
-                ram: 6,
-                mmlu: 74.5,
-                humaneval: 68.9,
-                speed: "Fast",
-                arch: "Dense",
-                isNew: false,
-                release: "Sep 2025"
-            },
-            {
-                name: "Gemma 3 4B",
-                org: "Google",
-                size: "4B",
-                ram: 6,
-                mmlu: 72.1,
-                humaneval: 66.4,
-                speed: "Fast",
-                arch: "Dense",
-                isNew: false,
-                release: "Mar 2025"
-            },
-            {
-                name: "Llama 3.3 70B",
-                org: "Meta",
-                size: "70B",
-                ram: 55,
-                mmlu: 86.1,
-                humaneval: 81.2,
-                speed: "Slow",
-                arch: "Dense",
-                isNew: false,
-                release: "Dec 2024"
-            }
+            { name: "Gemma 4 E4B", org: "Google", size: "4B", ram: 8, mmlu: 78.5, humaneval: 72.3, speed: "Fast", arch: "Dense", isNew: true, release: "Apr 2026" },
+            { name: "Gemma 4 26B A4B", org: "Google", size: "26B (4B active)", ram: 16, mmlu: 85.2, humaneval: 81.7, speed: "Moderate", arch: "MoE", isNew: true, release: "Apr 2026" },
+            { name: "Gemma 4 31B", org: "Google", size: "31B", ram: 62, mmlu: 87.1, humaneval: 84.2, speed: "Slow", arch: "Dense", isNew: true, release: "Apr 2026" },
+            { name: "Gemma 4 E2B", org: "Google", size: "2B", ram: 4, mmlu: 71.2, humaneval: 65.8, speed: "Very Fast", arch: "Dense", isNew: true, release: "Apr 2026" },
+            { name: "Qwen 3.6 35B-A3B", org: "Alibaba", size: "35B (3B active)", ram: 20, mmlu: 83.8, humaneval: 79.4, speed: "Moderate", arch: "MoE", isNew: true, release: "Apr 2026" },
+            { name: "Llama 4 Scout", org: "Meta", size: "109B (17B active)", ram: 35, mmlu: 86.5, humaneval: 82.1, speed: "Slow", arch: "MoE", isNew: false, release: "Apr 2025" },
+            { name: "Llama 4 Maverick", org: "Meta", size: "400B (17B active)", ram: 40, mmlu: 88.2, humaneval: 85.3, speed: "Slow", arch: "MoE", isNew: false, release: "Apr 2025" },
+            { name: "Mistral Small 4", org: "Mistral", size: "12B", ram: 8, mmlu: 76.8, humaneval: 70.2, speed: "Fast", arch: "Dense", isNew: true, release: "Mar 2026" },
+            { name: "DeepSeek R1", org: "DeepSeek", size: "671B (37B active)", ram: 40, mmlu: 90.2, humaneval: 89.7, speed: "Slow", arch: "MoE", isNew: false, release: "Jan 2026" },
+            { name: "Qwen 3.5 7B", org: "Alibaba", size: "7B", ram: 6, mmlu: 74.5, humaneval: 68.9, speed: "Fast", arch: "Dense", isNew: false, release: "Sep 2025" },
+            { name: "Gemma 3 4B", org: "Google", size: "4B", ram: 6, mmlu: 72.1, humaneval: 66.4, speed: "Fast", arch: "Dense", isNew: false, release: "Mar 2025" },
+            { name: "Llama 3.3 70B", org: "Meta", size: "70B", ram: 55, mmlu: 86.1, humaneval: 81.2, speed: "Slow", arch: "Dense", isNew: false, release: "Dec 2024" },
+            { name: "Phi-4 14B", org: "Microsoft", size: "14B", ram: 10, mmlu: 81.2, humaneval: 75.8, speed: "Fast", arch: "Dense", isNew: true, release: "Jan 2026" },
+            { name: "Nemotron 4 340B", org: "NVIDIA", size: "340B", ram: 80, mmlu: 88.9, humaneval: 86.4, speed: "Very Slow", arch: "Dense", isNew: false, release: "Jun 2024" },
+            { name: "Mixtral 8x22B", org: "Mistral", size: "176B (44B active)", ram: 50, mmlu: 84.7, humaneval: 80.1, speed: "Slow", arch: "MoE", isNew: false, release: "Apr 2024" },
+            { name: "Qwen 2.5 72B", org: "Alibaba", size: "72B", ram: 58, mmlu: 85.1, humaneval: 81.3, speed: "Slow", arch: "Dense", isNew: false, release: "Sep 2025" },
+            { name: "Gemma 3 27B", org: "Google", size: "27B", ram: 18, mmlu: 79.8, humaneval: 74.2, speed: "Moderate", arch: "Dense", isNew: false, release: "Mar 2025" },
+            { name: "Llama 3.1 405B", org: "Meta", size: "405B", ram: 85, mmlu: 87.3, humaneval: 83.9, speed: "Very Slow", arch: "Dense", isNew: false, release: "Jul 2024" },
+            { name: "DeepSeek V3", org: "DeepSeek", size: "671B (37B active)", ram: 40, mmlu: 87.1, humaneval: 82.3, speed: "Slow", arch: "MoE", isNew: false, release: "Dec 2024" },
+            { name: "Mistral Large 2", org: "Mistral", size: "123B", ram: 65, mmlu: 84.2, humaneval: 80.5, speed: "Slow", arch: "Dense", isNew: false, release: "Jul 2024" }
         ];
+        
+        let selectedModels = [];
+        let charts = {};
         
         function getScoreClass(score) {
             if (score >= 80) return 'score-high';
@@ -563,6 +640,34 @@
             return 'ram-red';
         }
         
+        function toggleModelSelection(modelName) {
+            const index = selectedModels.indexOf(modelName);
+            if (index > -1) {
+                selectedModels.splice(index, 1);
+            } else if (selectedModels.length < 4) {
+                selectedModels.push(modelName);
+            }
+            document.getElementById('compareCount').textContent = selectedModels.length;
+            renderModels(getFilteredModels());
+            updateComparison();
+        }
+        
+        function getFilteredModels() {
+            const org = document.getElementById('orgFilter').value;
+            const arch = document.getElementById('archFilter').value;
+            const cpu = document.getElementById('cpuFilter').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            
+            return models.filter(model => {
+                if (org !== 'all' && model.org !== org) return false;
+                if (arch !== 'all' && model.arch !== arch) return false;
+                if (cpu === 'yes' && model.ram > 64) return false;
+                if (cpu === 'fast' && !['Very Fast', 'Fast'].includes(model.speed)) return false;
+                if (search && !model.name.toLowerCase().includes(search)) return false;
+                return true;
+            });
+        }
+        
         function renderModels(filteredModels) {
             const container = document.getElementById('modelsList');
             
@@ -572,16 +677,14 @@
             }
             
             container.innerHTML = filteredModels.map(model => `
-                <div class="model-row" data-org="${model.org}" data-arch="${model.arch}">
+                <div class="model-row ${selectedModels.includes(model.name) ? 'selected' : ''}">
                     <div>
                         <div class="model-name">${model.name}</div>
                         <div class="model-org">${model.org} • ${model.release}</div>
                     </div>
                     <div>${model.size}</div>
                     <div>
-                        <span class="ram-badge ${getRamClass(model.ram)}">
-                            ${model.ram}GB
-                        </span>
+                        <span class="ram-badge ${getRamClass(model.ram)}">${model.ram}GB</span>
                     </div>
                     <div class="score ${getScoreClass(model.mmlu)}">${model.mmlu}%</div>
                     <div class="score ${getScoreClass(model.humaneval)}">${model.humaneval}%</div>
@@ -590,8 +693,18 @@
                         ${model.isNew ? '<span class="badge badge-new">NEW</span>' : ''}
                         <span class="badge badge-${model.arch.toLowerCase()}">${model.arch}</span>
                     </div>
+                    <div>
+                        <input type="checkbox" class="compare-checkbox" 
+                            ${selectedModels.includes(model.name) ? 'checked' : ''} 
+                            ${selectedModels.length >= 4 && !selectedModels.includes(model.name) ? 'disabled' : ''}
+                            onchange="toggleModelSelection('${model.name}')">
+                    </div>
                 </div>
             `).join('');
+        }
+        
+        function filterModels() {
+            renderModels(getFilteredModels());
         }
         
         function updateStats() {
@@ -600,29 +713,167 @@
             document.getElementById('newThisMonth').textContent = models.filter(m => m.isNew).length;
         }
         
-        function filterModels() {
-            const org = document.getElementById('orgFilter').value;
-            const arch = document.getElementById('archFilter').value;
-            const cpu = document.getElementById('cpuFilter').value;
-            const search = document.getElementById('searchInput').value.toLowerCase();
+        function updateComparison() {
+            const container = document.getElementById('comparisonContent');
             
-            let filtered = models.filter(model => {
-                if (org !== 'all' && model.org !== org) return false;
-                if (arch !== 'all' && model.arch !== arch) return false;
-                if (cpu === 'yes' && model.ram > 64) return false;
-                if (cpu === 'fast' && !['Very Fast', 'Fast'].includes(model.speed)) return false;
-                if (search && !model.name.toLowerCase().includes(search)) return false;
-                return true;
-            });
+            if (selectedModels.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary);">Select models from the table view to compare them here.</p>';
+                return;
+            }
             
-            renderModels(filtered);
+            const selected = models.filter(m => selectedModels.includes(m.name));
+            const maxMMLU = Math.max(...selected.map(m => m.mmlu));
+            const maxHumanEval = Math.max(...selected.map(m => m.humaneval));
+            const minRAM = Math.min(...selected.map(m => m.ram));
+            
+            container.innerHTML = selected.map(model => `
+                <div class="comparison-card ${model.mmlu === maxMMLU || model.humaneval === maxHumanEval || model.ram === minRAM ? 'winner' : ''}">
+                    <h4 style="margin-bottom: 15px; color: var(--accent);">${model.name}</h4>
+                    <div class="comparison-metric">
+                        <span>Organization</span>
+                        <strong>${model.org}</strong>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>Size</span>
+                        <strong>${model.size}</strong>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>RAM</span>
+                        <strong style="color: ${model.ram === minRAM ? '#22c55e' : 'inherit'}">${model.ram}GB</strong>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>MMLU</span>
+                        <strong style="color: ${model.mmlu === maxMMLU ? '#22c55e' : 'inherit'}">${model.mmlu}%</strong                    </div>
+                    <div class="comparison-metric">
+                        <span>HumanEval</span>
+                        <strong style="color: ${model.humaneval === maxHumanEval ? '#22c55e' : 'inherit'}">${model.humaneval}%</strong>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>Speed</span>
+                        <strong>${model.speed}</strong>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>Architecture</span>
+                        <strong>${model.arch}</strong>
+                    </div>
+                </div>
+            `).join('');
         }
         
-        // Event listeners
-        document.getElementById('orgFilter').addEventListener('change', filterModels);
-        document.getElementById('archFilter').addEventListener('change', filterModels);
-        document.getElementById('cpuFilter').addEventListener('change', filterModels);
-        document.getElementById('searchInput').addEventListener('input', filterModels);
+        function initCharts() {
+            const ctx1 = document.getElementById('mmluChart').getContext('2d');
+            const ctx2 = document.getElementById('humanevalChart').getContext('2d');
+            const ctx3 = document.getElementById('ramChart').getContext('2d');
+            const ctx4 = document.getElementById('orgChart').getContext('2d');
+            
+            const labels = models.map(m => m.name);
+            const mmluData = models.map(m => m.mmlu);
+            const humanevalData = models.map(m => m.humaneval);
+            const ramData = models.map(m => m.ram);
+            
+            const orgCounts = {};
+            models.forEach(m => { orgCounts[m.org] = (orgCounts[m.org] || 0) + 1; });
+            
+            charts.mmlu = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'MMLU Score (%)',
+                        data: mmluData,
+                        backgroundColor: 'rgba(102, 126, 234, 0.6)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true, max: 100 } }
+                }
+            });
+            
+            charts.humaneval = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'HumanEval Score (%)',
+                        data: humanevalData,
+                        backgroundColor: 'rgba(118, 75, 162, 0.6)',
+                        borderColor: 'rgba(118, 75, 162, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true, max: 100 } }
+                }
+            });
+            
+            charts.ram = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'RAM Required (GB)',
+                        data: ramData,
+                        backgroundColor: 'rgba(34, 197, 94, 0.6)',
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+            
+            charts.org = new Chart(ctx4, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(orgCounts),
+                    datasets: [{
+                        data: Object.values(orgCounts),
+                        backgroundColor: [
+                            'rgba(102, 126, 234, 0.6)',
+                            'rgba(118, 75, 162, 0.6)',
+                            'rgba(34, 197, 94, 0.6)',
+                            'rgba(245, 158, 11, 0.6)',
+                            'rgba(239, 68, 68, 0.6)',
+                            'rgba(59, 130, 246, 0.6)',
+                            'rgba(168, 85, 247, 0.6)'
+                        ]
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+        
+        function showTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tab + 'Tab').classList.add('active');
+            event.target.classList.add('active');
+            
+            if (tab === 'charts' && !charts.mmlu) {
+                setTimeout(initCharts, 100);
+            }
+        }
+        
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            
+            document.querySelector('.theme-toggle').textContent = next === 'dark' ? '🌙' : '☀️';
+            
+            // Update charts if they exist
+            if (charts.mmlu) {
+                Object.values(charts).forEach(chart => chart.update());
+            }
+        }
         
         // Initialize
         updateStats();
